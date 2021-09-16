@@ -10,18 +10,17 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.redravencomputing.wander.databinding.ActivityMapsBinding
 import java.util.*
+
+private val TAG = MapsActivity::class.java.simpleName
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
-    private val TAG = MapsActivity::class.java.simpleName
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +50,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val longitude = -112.29796757850184
         val zoomLevel = 15f
 
+
         val homeLatlng =  LatLng(latitude, longitude)
+        val overlaySize  = 100f
+        val androidOverlay = GroundOverlayOptions().image(BitmapDescriptorFactory.fromResource(R.drawable.android)).position(homeLatlng, overlaySize)
+
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLatlng, zoomLevel))
         map.addMarker(MarkerOptions().position(homeLatlng))
 
+        map.addGroundOverlay(androidOverlay)
         setMopLongClick(map)
         setPoiClick(map)
         setMapStyle(map)
